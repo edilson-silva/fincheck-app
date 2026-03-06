@@ -1,3 +1,5 @@
+import { Router } from "./Router";
+
 export function App() {
-  return <h1 className="bg-red-500 text-white">Hello World</h1>;
+  return <Router />;
 }
