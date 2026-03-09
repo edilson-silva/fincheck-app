@@ -9,9 +9,7 @@ interface AuthProviderParams {
 
 export function AuthContextProvider({ children }: AuthProviderParams) {
   const [signedIn, setSignedIn] = useState<boolean>(() => {
-    const storedAccessToken = StorageUtil.getItem<string>(
-      Constants.ACCESS_TOKEN,
-    );
+    const storedAccessToken = StorageUtil.getItem(Constants.ACCESS_TOKEN);
 
     return !!storedAccessToken;
   });
