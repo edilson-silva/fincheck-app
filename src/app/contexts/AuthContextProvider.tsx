@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import toast from "react-hot-toast";
+import { SplashScreen } from "../../view/components/SplashScreen";
 import { Constants } from "../config/constants";
 import { queryClient } from "../services/queryClient";
 import { usersService } from "../services/usersService";
@@ -30,7 +31,7 @@ export function AuthContextProvider({ children }: AuthProviderParams) {
     setSignedIn(false);
   }, []);
 
-  const { isError, isSuccess } = useQuery({
+  const { isError, isFetching, isSuccess } = useQuery({
     queryKey: ["users", "me"],
     queryFn: () => usersService.me(),
     enabled: signedIn,
@@ -54,7 +55,8 @@ export function AuthContextProvider({ children }: AuthProviderParams) {
         signout,
       }}
     >
-      {children}
+      <SplashScreen isLoading={isFetching} />
+      {!isFetching && children}
     </AuthContext.Provider>
   );
 }
