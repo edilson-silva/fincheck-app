@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import toast from "react-hot-toast";
 import { Constants } from "../config/constants";
+import { queryClient } from "../services/queryClient";
 import { usersService } from "../services/usersService";
 import { StorageUtil } from "../utils/storage";
 import { AuthContext } from "./AuthContext";
@@ -29,7 +30,7 @@ export function AuthContextProvider({ children }: AuthProviderParams) {
     setSignedIn(false);
   }, []);
 
-  const { isError } = useQuery({
+  const { isError, isSuccess } = useQuery({
     queryKey: ["users", "me"],
     queryFn: () => usersService.me(),
     enabled: signedIn,
@@ -41,11 +42,18 @@ export function AuthContextProvider({ children }: AuthProviderParams) {
       toast.error("Sua sessão expirou!");
       // eslint-disable-next-line react-hooks/set-state-in-effect
       signout();
+      queryClient.clear();
     }
   }, [isError, signout]);
 
   return (
-    <AuthContext.Provider value={{ signedIn, signin, signout }}>
+    <AuthContext.Provider
+      value={{
+        signedIn: signedIn && isSuccess,
+        signin,
+        signout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
