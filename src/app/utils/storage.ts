@@ -8,4 +8,8 @@ export class StorageUtil {
   static getItem(key: string) {
     return localStorage.getItem(`${this.FICHECK_PREFIX}${key}`);
   }
+
+  static removeItem(key: string) {
+    return localStorage.removeItem(`${this.FICHECK_PREFIX}${key}`);
+  }
 }
