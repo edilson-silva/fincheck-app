@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Constants } from "../config/constants";
+import { CONFIG } from "../config/constants";
 import { StorageUtil } from "../utils/storage";
 
 export const httpClient = axios.create({
@@ -7,7 +7,7 @@ export const httpClient = axios.create({
 });
 
 httpClient.interceptors.request.use((config) => {
-  const accessToken = StorageUtil.getItem(Constants.ACCESS_TOKEN);
+  const accessToken = StorageUtil.getItem(CONFIG.ACCESS_TOKEN);
 
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import toast from "react-hot-toast";
 import { SplashScreen } from "../../view/components/SplashScreen";
-import { Constants } from "../config/constants";
+import { CONFIG } from "../config/constants";
 import { queryClient } from "../services/queryClient";
 import { usersService } from "../services/usersService";
 import { StorageUtil } from "../utils/storage";
@@ -14,19 +14,19 @@ interface AuthProviderParams {
 
 export function AuthContextProvider({ children }: AuthProviderParams) {
   const [signedIn, setSignedIn] = useState<boolean>(() => {
-    const storedAccessToken = StorageUtil.getItem(Constants.ACCESS_TOKEN);
+    const storedAccessToken = StorageUtil.getItem(CONFIG.ACCESS_TOKEN);
 
     return !!storedAccessToken;
   });
 
   const signin = useCallback((accessToken: string) => {
-    StorageUtil.setItem(Constants.ACCESS_TOKEN, accessToken);
+    StorageUtil.setItem(CONFIG.ACCESS_TOKEN, accessToken);
 
     setSignedIn(true);
   }, []);
 
   const signout = useCallback(() => {
-    StorageUtil.removeItem(Constants.ACCESS_TOKEN);
+    StorageUtil.removeItem(CONFIG.ACCESS_TOKEN);
 
     setSignedIn(false);
   }, []);
