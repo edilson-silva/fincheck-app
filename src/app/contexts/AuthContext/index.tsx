@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import toast from "react-hot-toast";
-import { SplashScreen } from "../../view/components/SplashScreen";
-import { CONFIG } from "../config/constants";
-import { queryClient } from "../services/queryClient";
-import { usersService } from "../services/usersService";
-import { StorageUtil } from "../utils/storage";
+import { SplashScreen } from "../../../view/components/SplashScreen";
+import { CONFIG } from "../../config/constants";
+import { queryClient } from "../../services/queryClient";
+import { usersService } from "../../services/usersService";
+import { StorageUtil } from "../../utils/storage";
 import { AuthContext } from "./AuthContext";
 
 interface AuthProviderParams {
   children: ReactNode;
 }
 
-export function AuthContextProvider({ children }: AuthProviderParams) {
+export function AuthProvider({ children }: AuthProviderParams) {
   const [signedIn, setSignedIn] = useState<boolean>(() => {
     const storedAccessToken = StorageUtil.getItem(CONFIG.ACCESS_TOKEN);
 
