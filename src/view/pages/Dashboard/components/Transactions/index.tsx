@@ -1,14 +1,18 @@
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { MONTHS } from "../../../../../app/config/constants";
+import { cn } from "../../../../../app/utils/cn";
 import { formatCurrencty } from "../../../../../app/utils/currency";
 import { CategoryIcon } from "../../../../../assets/icons/categories/CategoryIcon";
 import { FilterIcon } from "../../../../../assets/icons/FilterIcon";
 import { TransactionsIcon } from "../../../../../assets/icons/TransactionsIcon";
 import { SliderNavigation } from "./SliderNavigation";
 import { SliderOption } from "./SliderOption";
+import { useTransactionsController } from "./useTransactionsController";
 
 export function Transactions() {
+  const { areValuesVisible } = useTransactionsController();
+
   return (
     <div className="bg-gray-200 rounded-2xl w-full h-full p-10 flex flex-col">
       <header className="">
@@ -52,7 +56,12 @@ export function Transactions() {
               <span className="text-sm text-gray-600">04/06/2026</span>
             </div>
           </div>
-          <span className="text-red-800 tracking-[-0.5px] font-medium">
+          <span
+            className={cn(
+              "text-red-800 tracking-[-0.5px] font-medium",
+              !areValuesVisible && "blur-sm",
+            )}
+          >
             {formatCurrencty(-123)}
           </span>
         </div>
@@ -66,7 +75,12 @@ export function Transactions() {
               <span className="text-sm text-gray-600">04/06/2026</span>
             </div>
           </div>
-          <span className="text-green-800 tracking-[-0.5px] font-medium">
+          <span
+            className={cn(
+              "text-green-800 tracking-[-0.5px] font-medium",
+              !areValuesVisible && "blur-sm",
+            )}
+          >
             {formatCurrencty(5000)}
           </span>
         </div>
