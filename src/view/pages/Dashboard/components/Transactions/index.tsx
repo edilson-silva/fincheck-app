@@ -1,6 +1,8 @@
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { MONTHS } from "../../../../../app/config/constants";
+import { formatCurrencty } from "../../../../../app/utils/currency";
+import { CategoryIcon } from "../../../../../assets/icons/categories/CategoryIcon";
 import { FilterIcon } from "../../../../../assets/icons/FilterIcon";
 import { TransactionsIcon } from "../../../../../assets/icons/TransactionsIcon";
 import { SliderNavigation } from "./SliderNavigation";
@@ -8,7 +10,7 @@ import { SliderOption } from "./SliderOption";
 
 export function Transactions() {
   return (
-    <div className="bg-gray-200 rounded-2xl w-full h-full p-10">
+    <div className="bg-gray-200 rounded-2xl w-full h-full p-10 flex flex-col">
       <header className="">
         <div className="flex items-center justify-between">
           <button className="flex items-center gap-2">
@@ -39,7 +41,36 @@ export function Transactions() {
           </Swiper>
         </div>
       </header>
-      <div className="mt-4">Coteúdo</div>
+      <div className="mt-4 space-y-2 flex-1 overflow-y-auto">
+        <div className="bg-white p-4 rounded-2xl flex items-center jusitfy-between gap-4">
+          <div className="flex-1 flex items-center gap-3">
+            <CategoryIcon type="expense" />
+            <div>
+              <strong className="font-bold tracking-[-0.5px] block">
+                Almoço
+              </strong>
+              <span className="text-sm text-gray-600">04/06/2026</span>
+            </div>
+          </div>
+          <span className="text-red-800 tracking-[-0.5px] font-medium">
+            {formatCurrencty(-123)}
+          </span>
+        </div>
+        <div className="bg-white p-4 rounded-2xl flex items-center jusitfy-between gap-4">
+          <div className="flex-1 flex items-center gap-3">
+            <CategoryIcon type="income" />
+            <div>
+              <strong className="font-bold tracking-[-0.5px] block">
+                Salário
+              </strong>
+              <span className="text-sm text-gray-600">04/06/2026</span>
+            </div>
+          </div>
+          <span className="text-green-800 tracking-[-0.5px] font-medium">
+            {formatCurrencty(5000)}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

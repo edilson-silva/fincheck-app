@@ -10,11 +10,11 @@ export function Dashboard() {
         <Logo className="h-6 text-teal-900" />
         <UserMenu />
       </header>
-      <main className="flex-1 flex flex-col md:flex-row gap-4">
-        <div className="w-full md:w-1/2 md:h-1/2">
+      <main className="flex-1 flex flex-col md:flex-row gap-4 max-h-full">
+        <div className="w-full md:w-1/2">
           <Accounts />
         </div>
-        <div className="w-full md:w-1/2 md:h-1/2">
+        <div className="w-full md:w-1/2">
           <Transactions />
         </div>
       </main>
