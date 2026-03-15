@@ -17,7 +17,7 @@ export function DropdownMenuItem({
     <RadixDropdownMenu.Item
       onSelect={onSelect}
       className={cn(
-        "min-h-[40px] outline-none flex items-center py-2 px-4 text-gray-800 text-sm data-[highlighted]:bg-gray-50 rounded-2xl transition-colors cursor-pointer",
+        "min-h-[40px] outline-none flex items-center py-2 p-4 text-gray-800 text-sm data-[highlighted]:bg-gray-50 rounded-2xl transition-colors cursor-pointer",
         className,
       )}
     >
