@@ -6,14 +6,22 @@ import { CategoryIcon } from "../../../../../assets/icons/categories/CategoryIco
 import { FilterIcon } from "../../../../../assets/icons/FilterIcon";
 import emptyStateImage from "../../../../../assets/images/empty-state.svg";
 import { Spinner } from "../../../../components/Spinner";
+import { FiltersModal } from "./FiltersModal";
 import { SliderNavigation } from "./SliderNavigation";
 import { SliderOption } from "./SliderOption";
 import { TransactionsMenu } from "./TransactionsMenu";
 import { useTransactionsController } from "./useTransactionsController";
 
 export function Transactions() {
-  const { areValuesVisible, isInitialLoading, isLoading, transactions } =
-    useTransactionsController();
+  const {
+    areValuesVisible,
+    isInitialLoading,
+    isLoading,
+    transactions,
+    isFiltersModalOpen,
+    handleOpenFiltersModal,
+    handleCloseFiltersModal,
+  } = useTransactionsController();
 
   const hasTransactions = transactions.length > 0;
 
@@ -24,13 +32,16 @@ export function Transactions() {
           <Spinner className="w-10 h-10" />
         </div>
       )}
-
       {!isInitialLoading && (
         <>
+          <FiltersModal
+            open={isFiltersModalOpen}
+            onClose={handleCloseFiltersModal}
+          />
           <header className="">
             <div className="flex items-center justify-between">
               <TransactionsMenu />
-              <button>
+              <button onClick={handleOpenFiltersModal}>
                 <FilterIcon />
               </button>
             </div>
