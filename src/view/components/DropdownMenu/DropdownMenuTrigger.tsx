@@ -7,7 +7,7 @@ interface DropdownMenuTriggerProps {
 
 export function DropdownMenuTrigger({ children }: DropdownMenuTriggerProps) {
   return (
-    <RadixDropdownMenu.Trigger className="outline-none">
+    <RadixDropdownMenu.Trigger className="outline-none" asChild>
       {children}
     </RadixDropdownMenu.Trigger>
   );
