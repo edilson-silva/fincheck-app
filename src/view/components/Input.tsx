@@ -1,6 +1,6 @@
 import { forwardRef, type ComponentProps } from "react";
 import { cn } from "../../app/utils/cn";
-import { FieldError } from "./FieldError";
+import { ErrorInfo } from "./ErrorInfo";
 
 interface InputProps extends ComponentProps<"input"> {
   name: string;
@@ -31,7 +31,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         >
           {placeholder}
         </label>
-        {error && <FieldError error={error} />}
+        {error && <ErrorInfo error={error} />}
       </div>
     );
   },

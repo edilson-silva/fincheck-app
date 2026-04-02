@@ -2,7 +2,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
 import * as RdxSelect from "@radix-ui/react-select";
 import { useState } from "react";
 import { cn } from "../../app/utils/cn";
-import { FieldError } from "./FieldError";
+import { ErrorInfo } from "./ErrorInfo";
 
 interface SelectOption {
   value: string;
@@ -78,7 +78,7 @@ export function Select({
           </RdxSelect.Portal>
         </RdxSelect.Root>
       </div>
-      {!selectedValue && <FieldError error={error} />}
+      {!selectedValue && <ErrorInfo error={error} />}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { cn } from "../../app/utils/cn";
 import { formatDate } from "../../app/utils/date";
 import { DatePicker } from "./DatePicker";
-import { FieldError } from "./FieldError";
+import { ErrorInfo } from "./ErrorInfo";
 import { Popover } from "./Popover";
 
 interface DatePickerInputProps {
@@ -45,7 +45,7 @@ export function DatePickerInput({ className, error }: DatePickerInputProps) {
         </Popover.Content>
       </Popover.Root>
 
-      {!selectedDate && <FieldError error={error} />}
+      {!selectedDate && <ErrorInfo error={error} />}
     </div>
   );
 }

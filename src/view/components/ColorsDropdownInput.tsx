@@ -3,7 +3,7 @@ import { useState } from "react";
 import { cn } from "../../app/utils/cn";
 import { ColorIcon } from "../../assets/icons/ColorIcon";
 import { DropdownMenu } from "./DropdownMenu";
-import { FieldError } from "./FieldError";
+import { ErrorInfo } from "./ErrorInfo";
 
 interface ColorsDropdownInputProps {
   className?: string;
@@ -74,7 +74,7 @@ export function ColorsDropdownInput({
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      {!selectedValue && <FieldError error={error} />}
+      {!selectedValue && <ErrorInfo error={error} />}
     </div>
   );
 }
