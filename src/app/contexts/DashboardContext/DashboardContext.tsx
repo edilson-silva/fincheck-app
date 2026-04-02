@@ -1,12 +1,16 @@
 import { createContext } from "react";
+import type { TransactionType } from "./types";
 
 interface DashboardContextValue {
   areValuesVisible: boolean;
   toggleValuesVisibility(): void;
   isNewAccountModalOpen: boolean;
-  isNewTransactionModalOpen: boolean;
   openNewAccountModal(): void;
   closeNewAccountModal(): void;
+  isNewTransactionModalOpen: boolean;
+  openNewTransactionModal(type: TransactionType): void;
+  closeNewTransactionModal(): void;
+  newTransactionType: TransactionType | null;
 }
 
 export const DashboardContext = createContext({} as DashboardContextValue);
