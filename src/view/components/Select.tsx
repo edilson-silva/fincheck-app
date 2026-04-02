@@ -61,7 +61,7 @@ export function Select({
               </RdxSelect.ScrollUpButton>
 
               {options.map((option) => (
-                <RdxSelect.Viewport className="p-2">
+                <RdxSelect.Viewport className="p-2" key={option.value}>
                   <RdxSelect.Item
                     className="p-2 text-gray-800 text-sm data-[state=checked]:font-bold data-[highlighted]:bg-gray-50 rounded-lg transition-colors cursor-pointer"
                     value={option.value}
