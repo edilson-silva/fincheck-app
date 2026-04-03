@@ -5,7 +5,7 @@ import { ErrorInfo } from "./ErrorInfo";
 interface InputCurrencyProps {
   error?: string;
   onChange?: (value: string) => void;
-  value?: string;
+  value?: string | number;
 }
 
 export function InputCurrency({ error, onChange, value }: InputCurrencyProps) {

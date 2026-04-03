@@ -1,4 +1,5 @@
 import { useCallback, useState, type ReactNode } from "react";
+import type { BankAccount } from "../../entities/bank-account.entity";
 import { DashboardContext } from "./DashboardContext";
 import type { TransactionType } from "./types";
 
@@ -11,6 +12,9 @@ export function DashboardProvider({
 }: DashboardContextProviderParams) {
   const [areValuesVisible, setAreValuesVisible] = useState(true);
   const [isNewAccountModalOpen, setIsNewAccountModalOpen] = useState(false);
+  const [isEditAccountModalOpen, setIsEditAccountModalOpen] = useState(false);
+  const [accountBeingEdited, setAccountBeingEdited] =
+    useState<BankAccount | null>(null);
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
     useState(false);
   const [newTransactionType, setNewTransactionType] =
@@ -26,6 +30,16 @@ export function DashboardProvider({
 
   const closeNewAccountModal = useCallback(() => {
     setIsNewAccountModalOpen(false);
+  }, []);
+
+  const openEditAccountModal = useCallback((bankAccount: BankAccount) => {
+    setAccountBeingEdited(bankAccount);
+    setIsEditAccountModalOpen(true);
+  }, []);
+
+  const closeEditAccountModal = useCallback(() => {
+    setAccountBeingEdited(null);
+    setIsEditAccountModalOpen(false);
   }, []);
 
   const openNewTransactionModal = useCallback((type: TransactionType) => {
@@ -46,6 +60,10 @@ export function DashboardProvider({
         isNewAccountModalOpen,
         openNewAccountModal,
         closeNewAccountModal,
+        isEditAccountModalOpen,
+        accountBeingEdited,
+        openEditAccountModal,
+        closeEditAccountModal,
         isNewTransactionModalOpen,
         openNewTransactionModal,
         closeNewTransactionModal,
