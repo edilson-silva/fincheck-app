@@ -4,3 +4,8 @@ export function formatCurrencty(value: number): string {
     currency: "BRL",
   }).format(value);
 }
+
+export function parseCurrency(value: string): number {
+  const numericValue = value.replace(/\./g, "").replace(",", ".");
+  return parseFloat(numericValue);
+}

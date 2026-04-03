@@ -5,15 +5,16 @@ import { ColorIcon } from "../../assets/icons/ColorIcon";
 import { DropdownMenu } from "./DropdownMenu";
 import { ErrorInfo } from "./ErrorInfo";
 
-interface ColorsDropdownInputProps {
-  className?: string;
-  error?: string;
-}
-
 type Color = {
   color: string;
   bg: string;
 };
+interface ColorsDropdownInputProps {
+  className?: string;
+  error?: string;
+  onChange?: (value: string) => void;
+  value?: string;
+}
 
 const colors: Color[] = [
   { color: "#868E96", bg: "#F8F9FA" },
@@ -35,11 +36,18 @@ const colors: Color[] = [
 export function ColorsDropdownInput({
   className,
   error,
+  onChange,
+  value,
 }: ColorsDropdownInputProps) {
-  const [selectedValue, setSelectedValue] = useState<Color | null>(null);
+  const [selectedValue, setSelectedValue] = useState<Color | null>(() => {
+    if (!value) return null;
+
+    return colors.find((color) => color.color === value) ?? null;
+  });
 
   function handleSelect(value: Color) {
     setSelectedValue(value);
+    onChange?.(value.color);
   }
 
   return (
@@ -49,7 +57,7 @@ export function ColorsDropdownInput({
           <button
             className={cn(
               "bg-white w-full rounded-lg border border-gray-500 px-3 h-[52px] text-gray-700 focus:border-gray-800 transition-all outline-none text-left relative",
-              !selectedValue && "!border-red-500",
+              !selectedValue && error && "!border-red-500",
               className,
             )}
           >
@@ -74,7 +82,7 @@ export function ColorsDropdownInput({
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      {!selectedValue && <ErrorInfo error={error} />}
+      {!selectedValue && error && <ErrorInfo error={error} />}
     </div>
   );
 }

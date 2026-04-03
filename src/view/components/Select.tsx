@@ -2,10 +2,11 @@ import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
 import * as RdxSelect from "@radix-ui/react-select";
 import { useState } from "react";
 import { cn } from "../../app/utils/cn";
+import { BankAccountType } from "../../app/utils/types";
 import { ErrorInfo } from "./ErrorInfo";
 
 interface SelectOption {
-  value: string;
+  value: BankAccountType;
   label: string;
 }
 
@@ -14,6 +15,8 @@ interface SelectProps {
   error?: string;
   placeholder?: string;
   options: SelectOption[];
+  onChange?: (value: BankAccountType) => void;
+  value?: BankAccountType;
 }
 
 export function Select({
@@ -21,11 +24,16 @@ export function Select({
   error,
   placeholder,
   options,
+  onChange,
+  value,
 }: SelectProps) {
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState(
+    value || BankAccountType.CHECKING,
+  );
 
-  function handleSelect(value: string) {
+  function handleSelect(value: BankAccountType) {
     setSelectedValue(value);
+    onChange?.(value);
   }
 
   return (
@@ -37,11 +45,10 @@ export function Select({
             selectedValue &&
               "text-xs left-[13px] top-2 transition-all translate-y-0",
           )}
-          htmlFor=""
         >
           {placeholder}
         </label>
-        <RdxSelect.Root onValueChange={handleSelect}>
+        <RdxSelect.Root onValueChange={handleSelect} value={selectedValue}>
           <RdxSelect.Trigger
             className={cn(
               "bg-white w-full rounded-lg border border-gray-500 px-3 h-[52px] text-gray-800 focus:border-gray-800 transition-all outline-none text-left relative pt-4",

@@ -4,10 +4,11 @@ import { ErrorInfo } from "./ErrorInfo";
 
 interface InputCurrencyProps {
   error?: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  value?: string;
 }
 
-export function InputCurrency({ error, onChange }: InputCurrencyProps) {
+export function InputCurrency({ error, onChange, value }: InputCurrencyProps) {
   return (
     <div>
       <NumericFormat
@@ -17,8 +18,8 @@ export function InputCurrency({ error, onChange }: InputCurrencyProps) {
         )}
         thousandSeparator="."
         decimalSeparator=","
-        defaultValue="0"
-        onValueChange={(values) => onChange(values.value)}
+        onValueChange={(values) => onChange?.(values.value)}
+        value={value}
       />
       {error && <ErrorInfo error={error} />}
     </div>
