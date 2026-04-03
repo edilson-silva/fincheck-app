@@ -1,13 +1,14 @@
 import { useDashboard } from "../../../../../app/hooks/useDashboard";
 import { cn } from "../../../../../app/utils/cn";
 import { formatCurrencty } from "../../../../../app/utils/currency";
+import type { BankAccountType } from "../../../../../app/utils/types";
 import { BankAccountTypeIcon } from "../../../../../assets/icons/BankAccountTypeIcon";
 
 interface AccountCardProps {
   color: string;
   name: string;
   balance: number;
-  type: "CASH" | "CHECKING" | "INVESTMENT";
+  type: BankAccountType;
 }
 
 export function AccountCard({ color, name, balance, type }: AccountCardProps) {
