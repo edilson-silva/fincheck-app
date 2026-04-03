@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDashboard } from "../../../../../app/hooks/useDashboard";
 import { useWindowWidth } from "../../../../../app/hooks/useWindowWidth";
 import { bankAccountsService } from "../../../../../app/services/bankAccountsService";
@@ -21,6 +21,15 @@ export function useAccountsController() {
     queryFn: bankAccountsService.list,
   });
 
+  const currentBalance = useMemo(() => {
+    if (!accounts) return 0;
+
+    return accounts.reduce(
+      (total, account) => total + account.currentBalance,
+      0,
+    );
+  }, [accounts]);
+
   return {
     sliderState,
     setSliderState,
@@ -29,6 +38,7 @@ export function useAccountsController() {
     toggleValuesVisibility,
     accounts: accounts ?? [],
     isLoading,
+    currentBalance,
     openNewAccountModal,
   };
 }

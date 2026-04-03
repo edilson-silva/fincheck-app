@@ -18,6 +18,7 @@ export function Accounts() {
     toggleValuesVisibility,
     isLoading,
     accounts,
+    currentBalance,
     openNewAccountModal,
   } = useAccountsController();
 
@@ -42,7 +43,7 @@ export function Accounts() {
                   !areValuesVisible && "blur-md",
                 )}
               >
-                {formatCurrencty(1000)}
+                {formatCurrencty(currentBalance)}
               </strong>
               <button
                 className="w-8 h-8 flex items-center justify-center"
