@@ -1,4 +1,4 @@
-import type { CategoryType } from "../utils/types";
+import type { TransactionCategoryType } from "../utils/types";
 
 export class Category {
   constructor(
@@ -6,6 +6,6 @@ export class Category {
     public userId: string,
     public name: string,
     public icon: string,
-    public type: CategoryType,
+    public type: TransactionCategoryType,
   ) {}
 }

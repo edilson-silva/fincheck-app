@@ -1,7 +1,7 @@
 import { useCallback, useState, type ReactNode } from "react";
 import type { BankAccount } from "../../entities/bank-account.entity";
+import type { TransactionCategoryType } from "../../utils/types";
 import { DashboardContext } from "./DashboardContext";
-import type { TransactionType } from "./types";
 
 interface DashboardContextProviderParams {
   children: ReactNode;
@@ -18,7 +18,7 @@ export function DashboardProvider({
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
     useState(false);
   const [newTransactionType, setNewTransactionType] =
-    useState<TransactionType | null>(null);
+    useState<TransactionCategoryType | null>(null);
 
   const toggleValuesVisibility = useCallback(() => {
     setAreValuesVisible((prevState) => !prevState);
@@ -42,10 +42,13 @@ export function DashboardProvider({
     setIsEditAccountModalOpen(false);
   }, []);
 
-  const openNewTransactionModal = useCallback((type: TransactionType) => {
-    setNewTransactionType(type);
-    setIsNewTransactionModalOpen(true);
-  }, []);
+  const openNewTransactionModal = useCallback(
+    (type: TransactionCategoryType) => {
+      setNewTransactionType(type);
+      setIsNewTransactionModalOpen(true);
+    },
+    [],
+  );
 
   const closeNewTransactionModal = useCallback(() => {
     setNewTransactionType(null);

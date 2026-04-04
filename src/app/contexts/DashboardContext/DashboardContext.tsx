@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import type { BankAccount } from "../../entities/bank-account.entity";
-import type { TransactionType } from "./types";
+import type { TransactionCategoryType } from "../../utils/types";
 
 interface DashboardContextValue {
   areValuesVisible: boolean;
@@ -13,9 +13,9 @@ interface DashboardContextValue {
   openEditAccountModal(bankAccount: BankAccount): void;
   closeEditAccountModal(): void;
   isNewTransactionModalOpen: boolean;
-  openNewTransactionModal(type: TransactionType): void;
+  openNewTransactionModal(type: TransactionCategoryType): void;
   closeNewTransactionModal(): void;
-  newTransactionType: TransactionType | null;
+  newTransactionType: TransactionCategoryType | null;
 }
 
 export const DashboardContext = createContext({} as DashboardContextValue);

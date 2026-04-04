@@ -4,7 +4,7 @@ export enum BankAccountType {
   CASH = "CASH",
 }
 
-export enum CategoryType {
+export enum TransactionCategoryType {
   INCOME = "INCOME",
   EXPENSE = "EXPENSE",
 }
