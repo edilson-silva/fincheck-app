@@ -56,7 +56,7 @@ export function Select({
           <RdxSelect.Trigger
             className={cn(
               "bg-white w-full rounded-lg border border-gray-500 px-3 h-[52px] text-gray-800 focus:border-gray-800 transition-all outline-none text-left relative pt-4",
-              !selectedValue && "!border-red-500",
+              error && "!border-red-500",
               className,
             )}
           >
@@ -95,7 +95,7 @@ export function Select({
           </RdxSelect.Portal>
         </RdxSelect.Root>
       </div>
-      {!selectedValue && <ErrorInfo error={error} />}
+      {error && <ErrorInfo error={error} />}
     </div>
   );
 }
