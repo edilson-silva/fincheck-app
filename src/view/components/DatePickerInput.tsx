@@ -8,14 +8,22 @@ import { Popover } from "./Popover";
 interface DatePickerInputProps {
   className?: string;
   error?: string;
+  value?: Date;
+  onChange?(date: Date): void;
 }
 
-export function DatePickerInput({ className, error }: DatePickerInputProps) {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+export function DatePickerInput({
+  className,
+  error,
+  value,
+  onChange,
+}: DatePickerInputProps) {
+  const [selectedDate, setSelectedDate] = useState<Date>(value ?? new Date());
   const [openDatePicker, setOpenDatePicker] = useState(false);
 
   function handleChange(date: Date) {
     setSelectedDate(date);
+    onChange?.(date);
     setOpenDatePicker(false);
   }
 
