@@ -3,11 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
+import { BankAccountsListKey } from "../../../../../app/hooks/useBankAccounts";
 import { useDashboard } from "../../../../../app/hooks/useDashboard";
 import { bankAccountsService } from "../../../../../app/services/bankAccountsService";
 import { parseCurrency } from "../../../../../app/utils/currency";
 import { BankAccountType } from "../../../../../app/utils/types";
-import { BankAccountsListKey } from "../../components/Accounts/useAccountsController";
 
 const schema = z.object({
   initialBalance: z.string().nonempty("Saldo inicial é obrigatório"),
