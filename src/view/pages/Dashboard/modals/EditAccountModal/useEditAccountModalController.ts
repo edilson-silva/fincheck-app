@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
@@ -21,9 +22,11 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export function useNewAccountModalController() {
+export function useEditAccountModalController() {
   const { isEditAccountModalOpen, closeEditAccountModal, accountBeingEdited } =
     useDashboard();
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] =
+    useState(false);
 
   const {
     register,
@@ -42,13 +45,19 @@ export function useNewAccountModalController() {
 
   const queryClient = useQueryClient();
 
-  const { isPending: isLoading, mutateAsync } = useMutation({
-    mutationFn: bankAccountsService.update,
-  });
+  const { isPending: isLoadingUpdate, mutateAsync: updateAccountMutateAsync } =
+    useMutation({
+      mutationFn: bankAccountsService.update,
+    });
+
+  const { isPending: isLoadingDelete, mutateAsync: deleteAccountMutateAsync } =
+    useMutation({
+      mutationFn: bankAccountsService.remove,
+    });
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
-      await mutateAsync({
+      await updateAccountMutateAsync({
         ...data,
         initialBalance: parseCurrency(data.initialBalance),
         id: accountBeingEdited!.id,
@@ -61,13 +70,37 @@ export function useNewAccountModalController() {
     }
   });
 
+  const handleConfirmDeleteModalOpen = () => {
+    setIsConfirmDeleteModalOpen(true);
+  };
+
+  const handleConfirmDeleteModalClose = () => {
+    setIsConfirmDeleteModalOpen(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccountMutateAsync(accountBeingEdited!.id);
+      toast.success("Conta deletada com sucesso!");
+      queryClient.invalidateQueries({ queryKey: [BankAccountsListKey] });
+      closeEditAccountModal();
+    } catch {
+      toast.error("Erro ao deletar conta. Tente novamente.");
+    }
+  };
+
   return {
     isEditAccountModalOpen,
     closeEditAccountModal,
+    accountBeingEdited,
     register,
     errors,
     handleSubmit,
     control,
-    isLoading,
+    isLoading: isLoadingUpdate || isLoadingDelete,
+    isConfirmDeleteModalOpen,
+    handleConfirmDeleteModalOpen,
+    handleConfirmDeleteModalClose,
+    handleDeleteAccount,
   };
 }

@@ -1,29 +1,53 @@
 import { Controller } from "react-hook-form";
 import { BankAccountType } from "../../../../../app/utils/types";
+import { TrashIcon } from "../../../../../assets/icons/TrashIcon";
 import { Button } from "../../../../components/Button";
 import { ColorsDropdownInput } from "../../../../components/ColorsDropdownInput";
+import { ConfirmDeleteModal } from "../../../../components/ConfirmDeleteModal";
 import { Input } from "../../../../components/Input";
 import { InputCurrency } from "../../../../components/InputCurrency";
 import { Modal } from "../../../../components/Modal";
 import { Select } from "../../../../components/Select";
-import { useNewAccountModalController } from "./useEditAccountModalController";
+import { useEditAccountModalController } from "./useEditAccountModalController";
 
 export function EditAccountModal() {
   const {
     isEditAccountModalOpen,
     closeEditAccountModal,
+    accountBeingEdited,
     errors,
     handleSubmit,
     register,
     control,
     isLoading,
-  } = useNewAccountModalController();
+    isConfirmDeleteModalOpen,
+    handleConfirmDeleteModalOpen,
+    handleConfirmDeleteModalClose,
+    handleDeleteAccount,
+  } = useEditAccountModalController();
+
+  if (isConfirmDeleteModalOpen) {
+    return (
+      <ConfirmDeleteModal
+        onClose={handleConfirmDeleteModalClose}
+        onConfirm={handleDeleteAccount}
+        title={`Tem certeza que deseja excluir a conta ${accountBeingEdited!.name}?`}
+        description="Ao excluir a conta, também serão excluídos todos os registros de receitas e despesas associados."
+        isLoading={isLoading}
+      />
+    );
+  }
 
   return (
     <Modal
       title="Editar conta"
       open={isEditAccountModalOpen}
       onClose={closeEditAccountModal}
+      rightAction={
+        <span onClick={handleConfirmDeleteModalOpen}>
+          <TrashIcon className="w-6 h-6 text-red-900" />
+        </span>
+      }
     >
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col">
