@@ -6,7 +6,7 @@ export interface ListTransactionsParams {
   month: number;
   year: number;
   bankAccountId?: string;
-  type?: TransactionCategoryType;
+  transactionType?: TransactionCategoryType;
 }
 export type ListTransactionsResponse = Transaction[];
 

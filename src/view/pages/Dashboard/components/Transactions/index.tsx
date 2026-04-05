@@ -44,7 +44,12 @@ export function Transactions() {
           />
           <header className="">
             <div className="flex items-center justify-between">
-              <TransactionsMenu />
+              <TransactionsMenu
+                onSelect={(transactionType) => {
+                  handleChangeFilters("transactionType", transactionType);
+                }}
+                selectedType={filters.transactionType}
+              />
               <button onClick={handleOpenFiltersModal}>
                 <FilterIcon />
               </button>
