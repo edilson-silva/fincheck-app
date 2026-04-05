@@ -29,12 +29,20 @@ export function useTransactionsController() {
     setIsFiltersModalOpen(false);
   };
 
-  const handleChangeFilters = <TFilter extends keyof ListTransactionsParams>(
+  const handleChangeFilter = <TFilter extends keyof ListTransactionsParams>(
     key: TFilter,
     value: ListTransactionsParams[TFilter],
   ) => {
     if (value === filters[key]) return;
     setFilters((prevState) => ({ ...prevState, [key]: value }));
+  };
+
+  const handleChangeFilters = <TFilter extends keyof ListTransactionsParams>(
+    filters: Record<TFilter, ListTransactionsParams[TFilter]>,
+  ) => {
+    for (const [k, v] of Object.entries(filters)) {
+      handleChangeFilter(k as TFilter, v as ListTransactionsParams[TFilter]);
+    }
   };
 
   return {
@@ -46,6 +54,7 @@ export function useTransactionsController() {
     handleOpenFiltersModal,
     handleCloseFiltersModal,
     filters,
+    handleChangeFilter,
     handleChangeFilters,
   };
 }

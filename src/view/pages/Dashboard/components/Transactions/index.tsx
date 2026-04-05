@@ -24,6 +24,7 @@ export function Transactions() {
     handleOpenFiltersModal,
     handleCloseFiltersModal,
     filters,
+    handleChangeFilter,
     handleChangeFilters,
   } = useTransactionsController();
 
@@ -41,12 +42,13 @@ export function Transactions() {
           <FiltersModal
             open={isFiltersModalOpen}
             onClose={handleCloseFiltersModal}
+            onApplyFilters={handleChangeFilters}
           />
           <header className="">
             <div className="flex items-center justify-between">
               <TransactionsMenu
                 onSelect={(transactionType) => {
-                  handleChangeFilters("transactionType", transactionType);
+                  handleChangeFilter("transactionType", transactionType);
                 }}
                 selectedType={filters.transactionType}
               />
@@ -60,7 +62,7 @@ export function Transactions() {
                 centeredSlides
                 initialSlide={filters.month}
                 onSlideChange={(swiper) => {
-                  handleChangeFilters("month", swiper.realIndex);
+                  handleChangeFilter("month", swiper.realIndex);
                 }}
               >
                 <SliderNavigation />
