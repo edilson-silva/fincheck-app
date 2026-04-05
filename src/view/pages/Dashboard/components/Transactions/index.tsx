@@ -2,6 +2,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { MONTHS } from "../../../../../app/config/constants";
 import { cn } from "../../../../../app/utils/cn";
 import { formatCurrencty } from "../../../../../app/utils/currency";
+import { formatDate } from "../../../../../app/utils/date";
+import { TransactionCategoryType } from "../../../../../app/utils/types";
 import { CategoryIcon } from "../../../../../assets/icons/categories/CategoryIcon";
 import { FilterIcon } from "../../../../../assets/icons/FilterIcon";
 import emptyStateImage from "../../../../../assets/images/empty-state.svg";
@@ -21,6 +23,8 @@ export function Transactions() {
     isFiltersModalOpen,
     handleOpenFiltersModal,
     handleCloseFiltersModal,
+    filters,
+    handleChangeFilters,
   } = useTransactionsController();
 
   const hasTransactions = transactions.length > 0;
@@ -46,7 +50,14 @@ export function Transactions() {
               </button>
             </div>
             <div className="mt-5 relative">
-              <Swiper slidesPerView={3} centeredSlides>
+              <Swiper
+                slidesPerView={3}
+                centeredSlides
+                initialSlide={filters.month}
+                onSlideChange={(swiper) => {
+                  handleChangeFilters("month", swiper.realIndex);
+                }}
+              >
                 <SliderNavigation />
                 {MONTHS.map((month, index) => (
                   <SwiperSlide>
@@ -78,48 +89,43 @@ export function Transactions() {
               </div>
             )}
 
-            {hasTransactions && !isLoading && (
-              <>
-                <div className="bg-white p-4 rounded-2xl flex items-center jusitfy-between gap-4">
-                  <div className="flex-1 flex items-center gap-3">
-                    <CategoryIcon type="expense" />
-                    <div>
-                      <strong className="font-bold tracking-[-0.5px] block">
-                        Almoço
-                      </strong>
-                      <span className="text-sm text-gray-600">04/06/2026</span>
-                    </div>
-                  </div>
-                  <span
-                    className={cn(
-                      "text-red-800 tracking-[-0.5px] font-medium",
-                      !areValuesVisible && "blur-sm",
-                    )}
+            {hasTransactions &&
+              !isLoading &&
+              transactions.map((transaction) => {
+                const isExpense =
+                  transaction.type === TransactionCategoryType.EXPENSE;
+                return (
+                  <div
+                    key={transaction.id}
+                    className="bg-white p-4 rounded-2xl flex items-center jusitfy-between gap-4"
                   >
-                    {formatCurrencty(-123)}
-                  </span>
-                </div>
-                <div className="bg-white p-4 rounded-2xl flex items-center jusitfy-between gap-4">
-                  <div className="flex-1 flex items-center gap-3">
-                    <CategoryIcon type="income" />
-                    <div>
-                      <strong className="font-bold tracking-[-0.5px] block">
-                        Salário
-                      </strong>
-                      <span className="text-sm text-gray-600">04/06/2026</span>
+                    <div className="flex-1 flex items-center gap-3">
+                      <CategoryIcon
+                        type={transaction.type}
+                        category={transaction.category?.icon}
+                      />
+                      <div>
+                        <strong className="font-bold tracking-[-0.5px] block">
+                          {transaction.name}
+                        </strong>
+                        <span className="text-sm text-gray-600">
+                          {formatDate(new Date(transaction.date))}
+                        </span>
+                      </div>
                     </div>
+                    <span
+                      className={cn(
+                        "tracking-[-0.5px] font-medium",
+                        isExpense ? "text-red-800" : "text-green-800",
+                        !areValuesVisible && "blur-sm",
+                      )}
+                    >
+                      {isExpense ? "-" : "+"}
+                      {formatCurrencty(transaction.value)}
+                    </span>
                   </div>
-                  <span
-                    className={cn(
-                      "text-green-800 tracking-[-0.5px] font-medium",
-                      !areValuesVisible && "blur-sm",
-                    )}
-                  >
-                    {formatCurrencty(5000)}
-                  </span>
-                </div>
-              </>
-            )}
+                );
+              })}
           </div>
         </>
       )}

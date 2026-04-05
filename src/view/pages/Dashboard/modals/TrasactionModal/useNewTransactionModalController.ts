@@ -7,6 +7,7 @@ import z from "zod";
 import { useBankAccounts } from "../../../../../app/hooks/useBankAccounts";
 import { useCategories } from "../../../../../app/hooks/useCategories";
 import { useDashboard } from "../../../../../app/hooks/useDashboard";
+import { TransactionsListKey } from "../../../../../app/hooks/useTransactions";
 import { transactionsService } from "../../../../../app/services/transactions";
 import { parseCurrency } from "../../../../../app/utils/currency";
 import { TransactionCategoryType } from "../../../../../app/utils/types";
@@ -20,8 +21,6 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
-
-export const TransactionsListKey = "transactions:list";
 
 export function useNewTransactionModalController() {
   const {
