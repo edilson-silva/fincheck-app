@@ -8,6 +8,7 @@ import { CategoryIcon } from "../../../../../assets/icons/categories/CategoryIco
 import { FilterIcon } from "../../../../../assets/icons/FilterIcon";
 import emptyStateImage from "../../../../../assets/images/empty-state.svg";
 import { Spinner } from "../../../../components/Spinner";
+import { EditTransactionModal } from "../../modals/EditTrasactionModal";
 import { FiltersModal } from "./FiltersModal";
 import { SliderNavigation } from "./SliderNavigation";
 import { SliderOption } from "./SliderOption";
@@ -26,6 +27,10 @@ export function Transactions() {
     filters,
     handleChangeFilter,
     handleChangeFilters,
+    isEditTransactionModalOpen,
+    transactionBeingEdited,
+    handleOpenEditTransactionModal,
+    handleCloseEditTransactionModal,
   } = useTransactionsController();
 
   const hasTransactions = transactions.length > 0;
@@ -96,43 +101,56 @@ export function Transactions() {
               </div>
             )}
 
-            {hasTransactions &&
-              !isLoading &&
-              transactions.map((transaction) => {
-                const isExpense =
-                  transaction.type === TransactionCategoryType.EXPENSE;
-                return (
-                  <div
-                    key={transaction.id}
-                    className="bg-white p-4 rounded-2xl flex items-center jusitfy-between gap-4"
-                  >
-                    <div className="flex-1 flex items-center gap-3">
-                      <CategoryIcon
-                        type={transaction.type}
-                        category={transaction.category?.icon}
-                      />
-                      <div>
-                        <strong className="font-bold tracking-[-0.5px] block">
-                          {transaction.name}
-                        </strong>
-                        <span className="text-sm text-gray-600">
-                          {formatDate(new Date(transaction.date))}
-                        </span>
-                      </div>
-                    </div>
-                    <span
-                      className={cn(
-                        "tracking-[-0.5px] font-medium",
-                        isExpense ? "text-red-800" : "text-green-800",
-                        !areValuesVisible && "blur-sm",
-                      )}
+            {hasTransactions && !isLoading && (
+              <>
+                {transactionBeingEdited && (
+                  <EditTransactionModal
+                    open={isEditTransactionModalOpen}
+                    onClose={handleCloseEditTransactionModal}
+                    transaction={transactionBeingEdited}
+                  />
+                )}
+                {transactions.map((transaction) => {
+                  const isExpense =
+                    transaction.type === TransactionCategoryType.EXPENSE;
+                  return (
+                    <div
+                      key={transaction.id}
+                      className="bg-white p-4 rounded-2xl flex items-center jusitfy-between gap-4"
+                      role="button"
+                      onClick={() =>
+                        handleOpenEditTransactionModal(transaction)
+                      }
                     >
-                      {isExpense ? "-" : "+"}
-                      {formatCurrencty(transaction.value)}
-                    </span>
-                  </div>
-                );
-              })}
+                      <div className="flex-1 flex items-center gap-3">
+                        <CategoryIcon
+                          type={transaction.type}
+                          category={transaction.category?.icon}
+                        />
+                        <div>
+                          <strong className="font-bold tracking-[-0.5px] block">
+                            {transaction.name}
+                          </strong>
+                          <span className="text-sm text-gray-600">
+                            {formatDate(new Date(transaction.date))}
+                          </span>
+                        </div>
+                      </div>
+                      <span
+                        className={cn(
+                          "tracking-[-0.5px] font-medium",
+                          isExpense ? "text-red-800" : "text-green-800",
+                          !areValuesVisible && "blur-sm",
+                        )}
+                      >
+                        {isExpense ? "-" : "+"}
+                        {formatCurrencty(transaction.value)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         </>
       )}

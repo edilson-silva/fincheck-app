@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { Transaction } from "../../../../../app/entities/transaction.entity";
 import { useDashboard } from "../../../../../app/hooks/useDashboard";
 import { useTransactions } from "../../../../../app/hooks/useTransactions";
 import type { ListTransactionsParams } from "../../../../../app/services/transactions/list";
@@ -9,6 +10,10 @@ export function useTransactionsController() {
   const today = new Date();
 
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
+  const [isEditTransactionModalOpen, setIsEditTransactionModalOpen] =
+    useState(false);
+  const [transactionBeingEdited, setTransactionBeingEdited] =
+    useState<Transaction | null>(null);
   const [filters, setFilters] = useState<ListTransactionsParams>({
     month: today.getMonth(),
     year: today.getFullYear(),
@@ -27,6 +32,16 @@ export function useTransactionsController() {
 
   const handleCloseFiltersModal = () => {
     setIsFiltersModalOpen(false);
+  };
+
+  const handleOpenEditTransactionModal = (transaction: Transaction) => {
+    setIsEditTransactionModalOpen(true);
+    setTransactionBeingEdited(transaction);
+  };
+
+  const handleCloseEditTransactionModal = () => {
+    setIsEditTransactionModalOpen(false);
+    setTransactionBeingEdited(null);
   };
 
   const handleChangeFilter = <TFilter extends keyof ListTransactionsParams>(
@@ -56,5 +71,9 @@ export function useTransactionsController() {
     filters,
     handleChangeFilter,
     handleChangeFilters,
+    isEditTransactionModalOpen,
+    transactionBeingEdited,
+    handleOpenEditTransactionModal,
+    handleCloseEditTransactionModal,
   };
 }
