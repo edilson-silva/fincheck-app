@@ -1,7 +1,9 @@
 import { Controller } from "react-hook-form";
 import type { Transaction } from "../../../../../app/entities/transaction.entity";
 import { TransactionCategoryType } from "../../../../../app/utils/types";
+import { TrashIcon } from "../../../../../assets/icons/TrashIcon";
 import { Button } from "../../../../components/Button";
+import { ConfirmDeleteModal } from "../../../../components/ConfirmDeleteModal";
 import { DatePickerInput } from "../../../../components/DatePickerInput";
 import { Input } from "../../../../components/Input";
 import { InputCurrency } from "../../../../components/InputCurrency";
@@ -27,14 +29,38 @@ export function EditTransactionModal({
     handleSubmit,
     accounts,
     categories,
-    isEditTransactionLoading,
+    isLoading,
+    isDeleteTransactionModalOpen,
+    handleDeleteTransaction,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
   } = useEditTransactionModalController(transaction, onClose);
 
   const isExpense = transaction?.type === TransactionCategoryType.EXPENSE;
   const transactionLabel = isExpense ? "Despesa" : "Receita";
 
+  if (isDeleteTransactionModalOpen) {
+    return (
+      <ConfirmDeleteModal
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteTransaction}
+        title={`Tem certeza que deseja excluir a ${transactionLabel.toLowerCase()} "${transaction!.name}"?`}
+        isLoading={isLoading}
+      />
+    );
+  }
+
   return (
-    <Modal title={`Editar ${transactionLabel}`} open={open} onClose={onClose}>
+    <Modal
+      title={`Editar ${transactionLabel}`}
+      open={open}
+      onClose={onClose}
+      rightAction={
+        <span onClick={handleOpenDeleteModal}>
+          <TrashIcon className="w-6 h-6 text-red-900" />
+        </span>
+      }
+    >
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col">
           <span className="text-gray-600 tracking-[-0.5px] text-xs">
@@ -109,7 +135,7 @@ export function EditTransactionModal({
               />
             )}
           />
-          <Button className="w-full mt-10" isLoading={isEditTransactionLoading}>
+          <Button className="w-full mt-10" isLoading={isLoading}>
             Salvar
           </Button>
         </div>

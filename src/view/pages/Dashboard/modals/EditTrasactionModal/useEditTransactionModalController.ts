@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
@@ -26,6 +26,9 @@ export function useEditTransactionModalController(
   transaction: Transaction | null,
   onClose: () => void,
 ) {
+  const [isDeleteTransactionModalOpen, setDeleteTransactionModalOpen] =
+    useState(false);
+
   const { accounts, isLoading: isListBankAccountsLoading } = useBankAccounts();
   const { categories: categoriesList, isLoading: isListCategoriesLoading } =
     useCategories();
@@ -52,11 +55,21 @@ export function useEditTransactionModalController(
     },
   });
 
-  const { isPending: isEditTransactionLoading, mutateAsync } = useMutation({
+  const queryClient = useQueryClient();
+
+  const {
+    isPending: isEditTransactionLoading,
+    mutateAsync: updateTransactionMutateAsync,
+  } = useMutation({
     mutationFn: transactionsService.update,
   });
 
-  const queryClient = useQueryClient();
+  const {
+    isPending: isDeleteTransactionLoading,
+    mutateAsync: deleteTransactionMutateAsync,
+  } = useMutation({
+    mutationFn: transactionsService.remove,
+  });
 
   const handleSubmit = hookFormSubmit(async (data) => {
     const transactionLabel =
@@ -65,24 +78,45 @@ export function useEditTransactionModalController(
         : "Receita";
 
     try {
-      await mutateAsync({
+      await updateTransactionMutateAsync({
         ...data,
         id: transaction!.id,
         value: parseCurrency(data.value),
         type: transaction!.type,
         date: data.date.toISOString(),
       });
-      toast.success(`${transactionLabel} editada com sucesso`);
+      toast.success(
+        `${transactionLabel} "${transaction!.name}" editada com sucesso`,
+      );
       queryClient.invalidateQueries({
         queryKey: [TransactionsListKey],
       });
       onClose();
     } catch {
       toast.error(
-        `Erro ao editar a ${transactionLabel.toLowerCase()}. Tente novamente.`,
+        `Erro ao editar a transação "${transaction!.name}". Tente novamente.`,
       );
     }
   });
+
+  const handleOpenDeleteModal = () => {
+    setDeleteTransactionModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteTransactionModalOpen(false);
+  };
+
+  const handleDeleteTransaction = async () => {
+    try {
+      await deleteTransactionMutateAsync(transaction!.id);
+      toast.success("Transação deletada com sucesso!");
+      queryClient.invalidateQueries({ queryKey: [TransactionsListKey] });
+      onClose();
+    } catch {
+      toast.error("Erro ao deletar a transação. Tente novamente.");
+    }
+  };
 
   return {
     register,
@@ -93,6 +127,10 @@ export function useEditTransactionModalController(
     isListBankAccountsLoading,
     categories,
     isListCategoriesLoading,
-    isEditTransactionLoading,
+    isLoading: isEditTransactionLoading || isDeleteTransactionLoading,
+    isDeleteTransactionModalOpen,
+    handleDeleteTransaction,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
   };
 }
