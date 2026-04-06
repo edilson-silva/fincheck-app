@@ -114,6 +114,7 @@ export function useEditTransactionModalController(
       await deleteTransactionMutateAsync(transaction!.id);
       toast.success("Transação deletada com sucesso!");
       queryClient.invalidateQueries({ queryKey: [TransactionsListKey] });
+      queryClient.invalidateQueries({ queryKey: [BankAccountsListKey] });
       onClose();
     } catch {
       toast.error("Erro ao deletar a transação. Tente novamente.");
