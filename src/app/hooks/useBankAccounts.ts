@@ -7,6 +7,7 @@ export function useBankAccounts() {
   const { data: accounts, isFetching: isLoading } = useQuery({
     queryKey: [BankAccountsListKey],
     queryFn: bankAccountsService.list,
+    staleTime: Infinity,
   });
 
   return {
