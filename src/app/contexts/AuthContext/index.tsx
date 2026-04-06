@@ -31,8 +31,13 @@ export function AuthProvider({ children }: AuthProviderParams) {
     setSignedIn(false);
   }, []);
 
-  const { isError, isFetching, isSuccess } = useQuery({
-    queryKey: ["users", "me"],
+  const {
+    isError,
+    isFetching,
+    isSuccess,
+    data: user,
+  } = useQuery({
+    queryKey: ["users:me"],
     queryFn: () => usersService.me(),
     enabled: signedIn,
     staleTime: Infinity,
@@ -51,6 +56,7 @@ export function AuthProvider({ children }: AuthProviderParams) {
     <AuthContext.Provider
       value={{
         signedIn: signedIn && isSuccess,
+        user,
         signin,
         signout,
       }}
