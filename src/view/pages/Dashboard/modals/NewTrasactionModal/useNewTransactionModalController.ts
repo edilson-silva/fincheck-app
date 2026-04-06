@@ -4,7 +4,10 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
-import { useBankAccounts } from "../../../../../app/hooks/useBankAccounts";
+import {
+  BankAccountsListKey,
+  useBankAccounts,
+} from "../../../../../app/hooks/useBankAccounts";
 import { useCategories } from "../../../../../app/hooks/useCategories";
 import { useDashboard } from "../../../../../app/hooks/useDashboard";
 import { TransactionsListKey } from "../../../../../app/hooks/useTransactions";
@@ -74,9 +77,8 @@ export function useNewTransactionModalController() {
         date: data.date.toISOString(),
       });
       toast.success(`${transactionLabel} cadastrada com sucesso`);
-      queryClient.invalidateQueries({
-        queryKey: [TransactionsListKey],
-      });
+      queryClient.invalidateQueries({ queryKey: [TransactionsListKey] });
+      queryClient.invalidateQueries({ queryKey: [BankAccountsListKey] });
       closeNewTransactionModal();
       reset();
     } catch {
