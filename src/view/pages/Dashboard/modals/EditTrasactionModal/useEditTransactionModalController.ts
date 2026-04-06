@@ -5,7 +5,10 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
 import type { Transaction } from "../../../../../app/entities/transaction.entity";
-import { useBankAccounts } from "../../../../../app/hooks/useBankAccounts";
+import {
+  BankAccountsListKey,
+  useBankAccounts,
+} from "../../../../../app/hooks/useBankAccounts";
 import { useCategories } from "../../../../../app/hooks/useCategories";
 import { TransactionsListKey } from "../../../../../app/hooks/useTransactions";
 import { transactionsService } from "../../../../../app/services/transactions";
@@ -88,9 +91,8 @@ export function useEditTransactionModalController(
       toast.success(
         `${transactionLabel} "${transaction!.name}" editada com sucesso`,
       );
-      queryClient.invalidateQueries({
-        queryKey: [TransactionsListKey],
-      });
+      queryClient.invalidateQueries({ queryKey: [TransactionsListKey] });
+      queryClient.invalidateQueries({ queryKey: [BankAccountsListKey] });
       onClose();
     } catch {
       toast.error(
